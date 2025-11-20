@@ -1,0 +1,37 @@
+.card {
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-fast);
+  background: var(--bg-primary);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.icon {
+  font-size: 36px;
+}
+
+.info {
+  flex: 1;
+}
+
+.title {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+}
+
+.value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
