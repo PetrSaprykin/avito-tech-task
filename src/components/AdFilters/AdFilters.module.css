@@ -1,0 +1,34 @@
+.filtersSection {
+  background: var(--bg-primary);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.filtersRow {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+}
+
+.filterItem {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filterItem label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.searchBar {
+  margin-bottom: var(--spacing-md);
+}
+
+.filtersActions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+}

@@ -1,0 +1,69 @@
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-primary);
+}
+
+.sortSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.sortControls {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.totalCount {
+  color: var(--text-tertiary);
+  font-size: 14px;
+}
+
+.adsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin-bottom: var(--spacing-xl);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-xl);
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 0;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+}
+
+.emptyIcon {
+  font-size: 64px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--spacing-md);
+}
+
+.emptyText {
+  font-size: 16px;
+  color: var(--text-tertiary);
+}
