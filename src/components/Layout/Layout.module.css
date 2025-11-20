@@ -1,0 +1,35 @@
+.layout {
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-lg);
+  gap: var(--spacing-md);
+  background-color: #292929;
+}
+
+body[data-theme="dark"] .header {
+  background-color: (--bg-primary) !important;
+}
+
+.logo {
+  color: var(--color-primary);
+  font-size: 18px;
+  font-weight: 600;
+  margin-right: var(--spacing-lg);
+  white-space: nowrap;
+}
+
+.menu {
+  flex: 1;
+  background-color: #292929;
+}
+
+.content {
+  padding: var(--spacing-lg);
+  background: var(--bg-layout);
+  transition: background var(--transition-base);
+  min-height: calc(100vh - 64px);
+}
