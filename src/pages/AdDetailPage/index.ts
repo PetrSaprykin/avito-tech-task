@@ -1,0 +1,1 @@
+export { AdDetailPage } from "./AdDetailPage";
