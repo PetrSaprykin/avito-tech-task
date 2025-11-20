@@ -1,0 +1,1 @@
+export { ModerationModal } from "./ModerationModal";
