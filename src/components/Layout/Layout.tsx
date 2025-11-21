@@ -2,7 +2,6 @@ import { ReactNode } from 'react'
 import { Layout as AntLayout, Menu } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { HotkeysHelp } from '@/components/HotkeysHelp'
 import styles from './Layout.module.css'
 
 const { Header, Content } = AntLayout
@@ -35,7 +34,6 @@ const Layout = ({ children }: LayoutProps) => {
         <ThemeToggle />
       </Header>
       <Content className={styles.content}>{children}</Content>
-      <HotkeysHelp />
     </AntLayout>
   )
 }
