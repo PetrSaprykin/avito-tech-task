@@ -25,7 +25,7 @@
   border-radius: 4px;
 }
 
-body[data-theme="dark"] .reason {
+body[data-theme='dark'] .reason {
   background: rgba(250, 173, 20, 0.15);
 }
 

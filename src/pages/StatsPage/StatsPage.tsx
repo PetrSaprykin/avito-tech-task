@@ -1,68 +1,64 @@
-import { useState, useEffect } from "react";
-import { Card, Select, Row, Col, Spin } from "antd";
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  ClockCircleOutlined,
-} from "@ant-design/icons";
+import { useState, useEffect } from 'react'
+import { Card, Select, Row, Col, Spin } from 'antd'
+import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import {
   getStatsSummary,
   getActivityChart,
   getDecisionsChart,
   getCategoriesChart,
-} from "@/api/stats";
-import { StatsSummary } from "@/types";
-import StatCard from "@/components/StatCard/StatCard";
-import ActivityChart from "@/components/charts/ActivityChart";
-import DecisionsChart from "@/components/charts/DecisionsChart";
-import CategoriesChart from "@/components/charts/CategoriesChart";
-import styles from "./StatsPage.module.css";
+} from '@/api/stats'
+import { StatsSummary } from '@/types'
+import { StatCard } from '@/components/StatCard/StatCard'
+import ActivityChart from '@/components/charts/ActivityChart'
+import DecisionsChart from '@/components/charts/DecisionsChart'
+import CategoriesChart from '@/components/charts/CategoriesChart'
+import styles from './StatsPage.module.css'
 
 export const StatsPage = () => {
-  const [period, setPeriod] = useState("week");
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<StatsSummary | null>(null);
-  const [activityData, setActivityData] = useState([]);
-  const [decisionsData, setDecisionsData] = useState(null);
-  const [categoriesData, setCategoriesData] = useState({});
+  const [period, setPeriod] = useState('week')
+  const [loading, setLoading] = useState(true)
+  const [stats, setStats] = useState<StatsSummary | null>(null)
+  const [activityData, setActivityData] = useState([])
+  const [decisionsData, setDecisionsData] = useState(null)
+  const [categoriesData, setCategoriesData] = useState({})
 
   useEffect(() => {
-    loadAllStats();
-  }, [period]);
+    loadAllStats()
+  }, [period])
 
   const loadAllStats = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       const [summary, activity, decisions, categories] = await Promise.all([
         getStatsSummary(period),
         getActivityChart(period),
         getDecisionsChart(period),
         getCategoriesChart(period),
-      ]);
+      ])
 
-      setStats(summary);
-      setActivityData(activity);
-      setDecisionsData(decisions);
-      setCategoriesData(categories);
+      setStats(summary)
+      setActivityData(activity)
+      setDecisionsData(decisions)
+      setCategoriesData(categories)
     } catch (error) {
-      console.error("Ошибка загрузки статистики:", error);
+      console.error('Ошибка загрузки статистики:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const periodOptions = [
-    { label: "Сегодня", value: "today" },
-    { label: "Последние 7 дней", value: "week" },
-    { label: "Последние 30 дней", value: "month" },
-  ];
+    { label: 'Сегодня', value: 'today' },
+    { label: 'Последние 7 дней', value: 'week' },
+    { label: 'Последние 30 дней', value: 'month' },
+  ]
 
   if (loading) {
     return (
       <div className={styles.loading}>
         <Spin size="large" />
       </div>
-    );
+    )
   }
 
   return (
@@ -85,7 +81,7 @@ export const StatsPage = () => {
                 title="Проверено"
                 value={stats.totalReviewed}
                 icon={<CheckCircleOutlined />}
-                color="#1890ff"
+                color="rgb(0, 170, 255)"
               />
             </Col>
             <Col xs={24} sm={12} lg={6}>
@@ -93,7 +89,7 @@ export const StatsPage = () => {
                 title="Одобрено"
                 value={`${stats.approvedPercentage.toFixed(2)}%`}
                 icon={<CheckCircleOutlined />}
-                color="#52c41a"
+                color="rgb(2, 209, 92)"
               />
             </Col>
             <Col xs={24} sm={12} lg={6}>
@@ -107,7 +103,7 @@ export const StatsPage = () => {
             <Col xs={24} sm={12} lg={6}>
               <StatCard
                 title="Ср. время"
-                value={`${Math.round(stats.averageReviewTime / 3600)} ч.`}
+                value={`${Math.round(stats.averageReviewTime / 60_000)} мин`} // из мс в мин
                 icon={<ClockCircleOutlined />}
                 color="#faad14"
               />
@@ -137,5 +133,5 @@ export const StatsPage = () => {
         </>
       )}
     </div>
-  );
-};
+  )
+}

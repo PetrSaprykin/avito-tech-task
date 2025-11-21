@@ -1,1 +1,1 @@
-export { ModerationHistory } from "./ModerationHistory";
+export { ModerationHistory } from './ModerationHistory'

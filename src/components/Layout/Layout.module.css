@@ -10,7 +10,7 @@
   background-color: #292929;
 }
 
-body[data-theme="dark"] .header {
+body[data-theme='dark'] .header {
   background-color: (--bg-primary) !important;
 }
 

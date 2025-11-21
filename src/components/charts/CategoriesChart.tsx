@@ -6,7 +6,7 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -22,9 +22,9 @@ const CategoriesChart = ({ data }: CategoriesChartProps) => {
       {
         label: 'Количество проверенных',
         data: Object.values(data),
-        backgroundColor: '#1890ff'
-      }
-    ]
+        backgroundColor: '#1890ff',
+      },
+    ],
   }
 
   const options = {
@@ -33,14 +33,14 @@ const CategoriesChart = ({ data }: CategoriesChartProps) => {
     indexAxis: 'y' as const,
     plugins: {
       legend: {
-        display: false
-      }
+        display: false,
+      },
     },
     scales: {
       x: {
-        beginAtZero: true
-      }
-    }
+        beginAtZero: true,
+      },
+    },
   }
 
   return (

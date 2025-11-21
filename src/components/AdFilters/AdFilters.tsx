@@ -1,38 +1,38 @@
-import { Input, Select, Button, Space } from "antd";
-import { ReloadOutlined, SearchOutlined } from "@ant-design/icons";
-import styles from "./AdFilters.module.css";
+import { Input, Select, Button, Space } from 'antd'
+import { ReloadOutlined, SearchOutlined } from '@ant-design/icons'
+import styles from './AdFilters.module.css'
 
 interface AdFiltersProps {
-  searchQuery: string;
-  onSearchChange: (value: string) => void;
-  onSearchSubmit: () => void;
-  selectedStatuses: string[];
-  onStatusesChange: (statuses: string[]) => void;
-  selectedCategory?: number;
-  onCategoryChange: (category?: number) => void;
-  minPrice: string;
-  onMinPriceChange: (price: string) => void;
-  maxPrice: string;
-  onMaxPriceChange: (price: string) => void;
-  onResetFilters: () => void;
-  searchInputRef?: React.RefObject<any>;
+  searchQuery: string
+  onSearchChange: (value: string) => void
+  onSearchSubmit: () => void
+  selectedStatuses: string[]
+  onStatusesChange: (statuses: string[]) => void
+  selectedCategory?: number
+  onCategoryChange: (category?: number) => void
+  minPrice: string
+  onMinPriceChange: (price: string) => void
+  maxPrice: string
+  onMaxPriceChange: (price: string) => void
+  onResetFilters: () => void
+  searchInputRef?: React.RefObject<any>
 }
 
 const STATUS_OPTIONS = [
-  { label: "На модерации", value: "pending" },
-  { label: "Одобрено", value: "approved" },
-  { label: "Отклонено", value: "rejected" },
-  { label: "Черновик", value: "draft" },
-];
+  { label: 'На модерации', value: 'pending' },
+  { label: 'Одобрено', value: 'approved' },
+  { label: 'Отклонено', value: 'rejected' },
+  { label: 'Черновик', value: 'draft' },
+]
 
 const CATEGORY_OPTIONS = [
-  { label: "Все категории", value: 0 },
-  { label: "Недвижимость", value: 1 },
-  { label: "Транспорт", value: 2 },
-  { label: "Работа", value: 3 },
-  { label: "Услуги", value: 4 },
-  { label: "Животные", value: 5 },
-];
+  { label: 'Все категории', value: 0 },
+  { label: 'Недвижимость', value: 1 },
+  { label: 'Транспорт', value: 2 },
+  { label: 'Работа', value: 3 },
+  { label: 'Услуги', value: 4 },
+  { label: 'Животные', value: 5 },
+]
 
 export const AdFilters = ({
   searchQuery,
@@ -50,15 +50,15 @@ export const AdFilters = ({
   searchInputRef,
 }: AdFiltersProps) => {
   const handleSearchKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      onSearchSubmit();
+    if (e.key === 'Enter') {
+      onSearchSubmit()
     }
-  };
+  }
 
   return (
     <div className={styles.filtersSection}>
       <div className={styles.searchBar}>
-        <Space.Compact style={{ width: "100%" }}>
+        <Space.Compact style={{ width: '100%' }}>
           <Input
             ref={searchInputRef}
             placeholder="Поиск по названию или описанию (нажмите / для быстрого доступа)"
@@ -68,12 +68,7 @@ export const AdFilters = ({
             onChange={(e) => onSearchChange(e.target.value)}
             onKeyUp={handleSearchKeyPress}
           />
-          <Button
-            type="primary"
-            size="large"
-            icon={<SearchOutlined />}
-            onClick={onSearchSubmit}
-          >
+          <Button type="primary" size="large" icon={<SearchOutlined />} onClick={onSearchSubmit}>
             Поиск
           </Button>
         </Space.Compact>
@@ -88,7 +83,7 @@ export const AdFilters = ({
             value={selectedStatuses}
             onChange={onStatusesChange}
             options={STATUS_OPTIONS}
-            style={{ width: "100%", marginTop: 8 }}
+            style={{ width: '100%', marginTop: 8 }}
           />
         </div>
 
@@ -99,7 +94,7 @@ export const AdFilters = ({
             value={selectedCategory}
             onChange={onCategoryChange}
             options={CATEGORY_OPTIONS}
-            style={{ width: "100%", marginTop: 8 }}
+            style={{ width: '100%', marginTop: 8 }}
           />
         </div>
 
@@ -132,5 +127,5 @@ export const AdFilters = ({
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}

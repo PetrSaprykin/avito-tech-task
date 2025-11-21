@@ -1,15 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import {
-  Button,
-  Spin,
-  Tag,
-  Card,
-  Descriptions,
-  Space,
-  message,
-  Image,
-} from "antd";
+import { useState, useEffect, useCallback } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { Button, Spin, Tag, Card, Descriptions, Space, message, Image } from 'antd'
 import {
   ArrowLeftOutlined,
   CheckCircleOutlined,
@@ -21,75 +12,69 @@ import {
   StarOutlined,
   ShopOutlined,
   CalendarOutlined,
-} from "@ant-design/icons";
-import {
-  getAdById,
-  approveAd,
-  rejectAd,
-  requestChanges,
-  getAds,
-} from "@/api/ads";
-import { Advertisement } from "@/types";
-import { useHotkeys } from "@/hooks/useHotkeys";
-import ModerationModal from "@/components/ModerationModal/ModerationModal";
-import ModerationHistory from "@/components/ModerationHistory/ModerationHistory";
-import { formatDate, formatPrice } from "@/utils/formatters";
-import { getStatusConfig } from "@/utils/statusConfig";
-import styles from "./AdDetailPage.module.css";
+} from '@ant-design/icons'
+import { getAdById, approveAd, rejectAd, requestChanges, getAds } from '@/api/ads'
+import { Advertisement } from '@/types'
+import { useHotkeys } from '@/hooks/useHotkeys'
+import { ModerationModal } from '@/components/ModerationModal/ModerationModal'
+import { ModerationHistory } from '@/components/ModerationHistory/ModerationHistory'
+import { formatDate, formatPrice } from '@/utils/formatters'
+import { getStatusConfig } from '@/utils/statusConfig'
+import styles from './AdDetailPage.module.css'
 
 export const AdDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
 
-  const [ad, setAd] = useState<Advertisement | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [actionLoading, setActionLoading] = useState(false);
-  const [rejectModalOpen, setRejectModalOpen] = useState(false);
-  const [changesModalOpen, setChangesModalOpen] = useState(false);
-  const [allAdsIds, setAllAdsIds] = useState<number[]>([]);
+  const [ad, setAd] = useState<Advertisement | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [actionLoading, setActionLoading] = useState(false)
+  const [rejectModalOpen, setRejectModalOpen] = useState(false)
+  const [changesModalOpen, setChangesModalOpen] = useState(false)
+  const [allAdsIds, setAllAdsIds] = useState<number[]>([])
 
   useEffect(() => {
-    loadAllAdsIds();
-  }, []);
+    loadAllAdsIds()
+  }, [])
 
   useEffect(() => {
     if (id) {
-      const numericId = parseInt(id, 10);
+      const numericId = parseInt(id, 10)
       if (!isNaN(numericId)) {
-        loadAd(numericId);
+        loadAd(numericId)
       } else {
-        setError("Некорректный ID объявления");
-        setLoading(false);
+        setError('Некорректный ID объявления')
+        setLoading(false)
       }
     }
-  }, [id]);
+  }, [id])
 
   const loadAllAdsIds = async () => {
     try {
-      const response = await getAds({ limit: 100, page: 1 });
-      const ids = response.ads.map((ad) => ad.id);
-      setAllAdsIds(ids);
+      const response = await getAds({ limit: 100, page: 1 })
+      const ids = response.ads.map((ad) => ad.id)
+      setAllAdsIds(ids)
     } catch (err) {
-      setAllAdsIds([]);
+      setAllAdsIds([])
     }
-  };
+  }
 
   const loadAd = async (adId: number) => {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
     try {
-      const data = await getAdById(adId);
-      setAd(data);
+      const data = await getAdById(adId)
+      setAd(data)
     } catch (err) {
-      const errorMessage = "Не удалось загрузить объявление";
-      setError(errorMessage);
-      message.error(errorMessage);
+      const errorMessage = 'Не удалось загрузить объявление'
+      setError(errorMessage)
+      message.error(errorMessage)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleModerationAction = useCallback(
     async (
@@ -99,80 +84,76 @@ export const AdDetailPage = () => {
       closeModal?: () => void,
       ...args: any[]
     ) => {
-      if (!ad) return;
+      if (!ad) return
 
-      setActionLoading(true);
+      setActionLoading(true)
       try {
-        await action(ad.id, ...args);
-        message.success(successMessage);
-        if (closeModal) closeModal();
-        loadAd(ad.id);
+        await action(ad.id, ...args)
+        message.success(successMessage)
+        if (closeModal) closeModal()
+        loadAd(ad.id)
       } catch (err) {
-        message.error(errorMessage);
+        message.error(errorMessage)
       } finally {
-        setActionLoading(false);
+        setActionLoading(false)
       }
     },
     [ad]
-  );
+  )
 
   const handleApprove = useCallback(() => {
-    handleModerationAction(
-      approveAd,
-      "Объявление одобрено",
-      "Ошибка при одобрении"
-    );
-  }, [handleModerationAction]);
+    handleModerationAction(approveAd, 'Объявление одобрено', 'Ошибка при одобрении')
+  }, [handleModerationAction])
 
   const handleReject = useCallback(
     (reason: string, comment: string) => {
       handleModerationAction(
         rejectAd,
-        "Объявление отклонено",
-        "Ошибка при отклонении",
+        'Объявление отклонено',
+        'Ошибка при отклонении',
         () => setRejectModalOpen(false),
         reason,
         comment
-      );
+      )
     },
     [handleModerationAction]
-  );
+  )
 
   const handleRequestChanges = useCallback(
     (reason: string, comment: string) => {
       handleModerationAction(
         requestChanges,
-        "Запрос на доработку отправлен",
-        "Ошибка при отправке запроса",
+        'Запрос на доработку отправлен',
+        'Ошибка при отправке запроса',
         () => setChangesModalOpen(false),
         reason,
         comment
-      );
+      )
     },
     [handleModerationAction]
-  );
+  )
 
   const goToPrevious = useCallback(() => {
-    if (!ad || allAdsIds.length === 0) return;
-    const currentIndex = allAdsIds.indexOf(ad.id);
+    if (!ad || allAdsIds.length === 0) return
+    const currentIndex = allAdsIds.indexOf(ad.id)
     if (currentIndex > 0) {
-      const prevId = allAdsIds[currentIndex - 1];
-      navigate(`/item/${prevId}`);
+      const prevId = allAdsIds[currentIndex - 1]
+      navigate(`/item/${prevId}`)
     } else {
-      message.info("Это первое объявление");
+      message.info('Это первое объявление')
     }
-  }, [ad, allAdsIds, navigate]);
+  }, [ad, allAdsIds, navigate])
 
   const goToNext = useCallback(() => {
-    if (!ad || allAdsIds.length === 0) return;
-    const currentIndex = allAdsIds.indexOf(ad.id);
+    if (!ad || allAdsIds.length === 0) return
+    const currentIndex = allAdsIds.indexOf(ad.id)
     if (currentIndex < allAdsIds.length - 1) {
-      const nextId = allAdsIds[currentIndex + 1];
-      navigate(`/item/${nextId}`);
+      const nextId = allAdsIds[currentIndex + 1]
+      navigate(`/item/${nextId}`)
     } else {
-      message.info("Это последнее объявление");
+      message.info('Это последнее объявление')
     }
-  }, [ad, allAdsIds, navigate]);
+  }, [ad, allAdsIds, navigate])
 
   useHotkeys(
     {
@@ -182,22 +163,22 @@ export const AdDetailPage = () => {
       arrowleft: goToPrevious,
     },
     !loading && !!ad
-  );
+  )
 
   if (loading) {
     return (
       <div className={styles.loading}>
         <Spin size="large" />
       </div>
-    );
+    )
   }
 
   if (error || !ad) {
     return (
       <div className={styles.error}>
-        <h2>{error || "Объявление не найдено"}</h2>
+        <h2>{error || 'Объявление не найдено'}</h2>
         <Space>
-          <Button onClick={() => navigate("/list")}>Вернуться к списку</Button>
+          <Button onClick={() => navigate('/list')}>Вернуться к списку</Button>
           {id && (
             <Button type="primary" onClick={() => loadAd(parseInt(id, 10))}>
               Попробовать снова
@@ -205,33 +186,25 @@ export const AdDetailPage = () => {
           )}
         </Space>
       </div>
-    );
+    )
   }
 
-  const statusConfig = getStatusConfig(ad.status);
-  const currentIndex = allAdsIds.indexOf(ad.id);
-  const hasPrevious = currentIndex > 0;
-  const hasNext = currentIndex < allAdsIds.length - 1;
+  const statusConfig = getStatusConfig(ad.status)
+  const currentIndex = allAdsIds.indexOf(ad.id)
+  const hasPrevious = currentIndex > 0
+  const hasNext = currentIndex < allAdsIds.length - 1
 
   return (
     <div className={styles.container}>
       <div className={styles.navigation}>
-        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate("/list")}>
+        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/list')}>
           К списку
         </Button>
         <div className={styles.navButtons}>
-          <Button
-            icon={<LeftOutlined />}
-            onClick={goToPrevious}
-            disabled={!hasPrevious}
-          >
+          <Button icon={<LeftOutlined />} onClick={goToPrevious} disabled={!hasPrevious}>
             Предыдущее (←)
           </Button>
-          <Button
-            icon={<RightOutlined />}
-            onClick={goToNext}
-            disabled={!hasNext}
-          >
+          <Button icon={<RightOutlined />} onClick={goToNext} disabled={!hasNext}>
             Следующее (→)
           </Button>
         </div>
@@ -246,7 +219,7 @@ export const AdDetailPage = () => {
                 <Tag color={statusConfig.color} icon={statusConfig.icon}>
                   {statusConfig.text}
                 </Tag>
-                {ad.priority === "urgent" && <Tag color="red">СРОЧНО</Tag>}
+                {ad.priority === 'urgent' && <Tag color="red">СРОЧНО</Tag>}
               </div>
             </div>
 
@@ -298,8 +271,7 @@ export const AdDetailPage = () => {
                     <ShopOutlined /> Объявлений: {ad.seller.totalAds}
                   </div>
                   <div className={styles.sellerInfo}>
-                    <CalendarOutlined /> На сайте с{" "}
-                    {formatDate(ad.seller.registeredAt)}
+                    <CalendarOutlined /> На сайте с {formatDate(ad.seller.registeredAt)}
                   </div>
                 </div>
               </div>
@@ -309,28 +281,28 @@ export const AdDetailPage = () => {
 
         <div className={styles.sidebar}>
           <Card title="Панель модератора" className={styles.moderatorPanel}>
-            <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+            <Space direction="vertical" size="middle" style={{ width: '100%' }}>
               <Button
                 type="primary"
                 icon={<CheckCircleOutlined />}
                 onClick={handleApprove}
                 loading={actionLoading}
-                disabled={ad.status === "approved"}
+                disabled={ad.status === 'approved'}
                 block
                 size="large"
                 className={styles.approveButton}
               >
-                {ad.status === "approved" ? "Уже одобрено" : "Одобрить (A)"}
+                {ad.status === 'approved' ? 'Уже одобрено' : 'Одобрить (A)'}
               </Button>
               <Button
                 danger
                 icon={<CloseCircleOutlined />}
                 onClick={() => setRejectModalOpen(true)}
-                disabled={ad.status === "rejected"}
+                disabled={ad.status === 'rejected'}
                 block
                 size="large"
               >
-                {ad.status === "rejected" ? "Уже отклонено" : "Отклонить (D)"}
+                {ad.status === 'rejected' ? 'Уже отклонено' : 'Отклонить (D)'}
               </Button>
               <Button
                 icon={<ExclamationCircleOutlined />}
@@ -365,5 +337,5 @@ export const AdDetailPage = () => {
         loading={actionLoading}
       />
     </div>
-  );
-};
+  )
+}

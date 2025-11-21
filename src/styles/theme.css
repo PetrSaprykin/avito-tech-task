@@ -39,7 +39,7 @@
 }
 
 /* Тёмная тема */
-body[data-theme="dark"] {
+body[data-theme='dark'] {
   /* Фоны тёмной темы */
   --bg-primary: #292929;
   --bg-secondary: #1f1f1f;

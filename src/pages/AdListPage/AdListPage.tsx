@@ -1,36 +1,36 @@
-import { useState, useEffect, useRef } from "react";
-import { Select, Pagination, Spin, message, InputRef } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import { useHotkeys } from "@/hooks/useHotkeys";
-import { useDebounce } from "@/hooks/useDebounce";
-import { useAdFilters } from "@/hooks/useAdFilters";
-import AdCard from "@/components/AdCard/AdCard";
-import { AdFilters } from "@/components/AdFilters/AdFilters";
-import { getAds } from "@/api/ads";
-import { Advertisement, Pagination as PaginationType } from "@/types";
-import styles from "./AdListPage.module.css";
+import { useState, useEffect, useRef } from 'react'
+import { Select, Pagination, Spin, message, InputRef } from 'antd'
+import { InboxOutlined } from '@ant-design/icons'
+import { useNavigate } from 'react-router-dom'
+import { useHotkeys } from '@/hooks/useHotkeys'
+import { useDebounce } from '@/hooks/useDebounce'
+import { useAdFilters } from '@/hooks/useAdFilters'
+import { AdCard } from '@/components/AdCard'
+import { AdFilters } from '@/components/AdFilters/AdFilters'
+import { getAds } from '@/api/ads'
+import { Advertisement, Pagination as PaginationType } from '@/types'
+import styles from './AdListPage.module.css'
 
 const SORT_OPTIONS = [
-  { label: "По дате создания", value: "createdAt" },
-  { label: "По цене", value: "price" },
-  { label: "По приоритету", value: "priority" },
-];
+  { label: 'По дате создания', value: 'createdAt' },
+  { label: 'По цене', value: 'price' },
+  { label: 'По приоритету', value: 'priority' },
+]
 
 const SORT_ORDER_OPTIONS = [
-  { label: "По возрастанию", value: "asc" },
-  { label: "По убыванию", value: "desc" },
-];
+  { label: 'По возрастанию', value: 'asc' },
+  { label: 'По убыванию', value: 'desc' },
+]
 
 export const AdListPage = () => {
-  const navigate = useNavigate();
-  const searchInputRef = useRef<InputRef>(null);
+  const navigate = useNavigate()
+  const searchInputRef = useRef<InputRef>(null)
 
-  const [ads, setAds] = useState<Advertisement[]>([]);
-  const [pagination, setPagination] = useState<PaginationType | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [ads, setAds] = useState<Advertisement[]>([])
+  const [pagination, setPagination] = useState<PaginationType | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const {
     selectedStatuses,
@@ -49,12 +49,12 @@ export const AdListPage = () => {
     setSortOrder,
     resetFilters,
     getFilterParams,
-  } = useAdFilters();
+  } = useAdFilters()
 
-  const debouncedSearch = useDebounce(searchInput, 500); // дебаунс поиска на 500мс
+  const debouncedSearch = useDebounce(searchInput, 500) // дебаунс поиска на 500мс
 
   useEffect(() => {
-    loadAds();
+    loadAds()
   }, [
     currentPage,
     selectedStatuses,
@@ -64,50 +64,50 @@ export const AdListPage = () => {
     debouncedSearch,
     sortBy,
     sortOrder,
-  ]);
+  ])
 
   const loadAds = async () => {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
     try {
       const params = {
         page: currentPage,
         limit: 10,
         ...getFilterParams(debouncedSearch),
-      };
+      }
 
-      const response = await getAds(params);
-      setAds(response.ads);
-      setPagination(response.pagination);
+      const response = await getAds(params)
+      setAds(response.ads)
+      setPagination(response.pagination)
     } catch (err) {
-      const errorMessage = "Не удалось загрузить объявления. Попробуйте позже.";
-      setError(errorMessage);
-      message.error(errorMessage);
+      const errorMessage = 'Не удалось загрузить объявления. Попробуйте позже.'
+      setError(errorMessage)
+      message.error(errorMessage)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleResetFilters = () => {
-    resetFilters();
-    setCurrentPage(1);
-  };
+    resetFilters()
+    setCurrentPage(1)
+  }
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   const handleCardClick = (id: number) => {
-    navigate(`/item/${id}`);
-  };
+    navigate(`/item/${id}`)
+  }
 
   useHotkeys({
-    "/": () => {
-      searchInputRef.current?.focus();
+    '/': () => {
+      searchInputRef.current?.focus()
     },
-  });
+  })
 
   if (error && !loading) {
     return (
@@ -119,7 +119,7 @@ export const AdListPage = () => {
           </button>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -172,11 +172,7 @@ export const AdListPage = () => {
         <>
           <div className={styles.adsList}>
             {ads.map((ad) => (
-              <AdCard
-                key={ad.id}
-                ad={ad}
-                onClick={() => handleCardClick(ad.id)}
-              />
+              <AdCard key={ad.id} ad={ad} onClick={() => handleCardClick(ad.id)} />
             ))}
           </div>
 
@@ -202,5 +198,5 @@ export const AdListPage = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}

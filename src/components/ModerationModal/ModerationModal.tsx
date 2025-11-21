@@ -1,25 +1,25 @@
-import { Modal, Radio, Input, Space } from "antd";
-import { useState } from "react";
+import { Modal, Radio, Input, Space } from 'antd'
+import { useState } from 'react'
 
-const { TextArea } = Input;
+const { TextArea } = Input
 
 interface ModerationModalProps {
-  visible: boolean;
-  title: string;
-  onOk: (reason: string, comment: string) => void;
-  onCancel: () => void;
-  loading: boolean;
-  isDanger?: boolean;
+  visible: boolean
+  title: string
+  onOk: (reason: string, comment: string) => void
+  onCancel: () => void
+  loading: boolean
+  isDanger?: boolean
 }
 
 const reasonOptions = [
-  "Запрещенный товар",
-  "Неверная категория",
-  "Некорректное описание",
-  "Проблемы с фото",
-  "Подозрение на мошенничество",
-  "Другое",
-];
+  'Запрещенный товар',
+  'Неверная категория',
+  'Некорректное описание',
+  'Проблемы с фото',
+  'Подозрение на мошенничество',
+  'Другое',
+]
 
 export const ModerationModal = ({
   visible,
@@ -29,20 +29,20 @@ export const ModerationModal = ({
   loading,
   isDanger,
 }: ModerationModalProps) => {
-  const [reason, setReason] = useState("");
-  const [comment, setComment] = useState("");
+  const [reason, setReason] = useState('')
+  const [comment, setComment] = useState('')
 
   const handleOk = () => {
-    onOk(reason, comment);
-    setReason("");
-    setComment("");
-  };
+    onOk(reason, comment)
+    setReason('')
+    setComment('')
+  }
 
   const handleCancel = () => {
-    onCancel();
-    setReason("");
-    setComment("");
-  };
+    onCancel()
+    setReason('')
+    setComment('')
+  }
 
   return (
     <Modal
@@ -50,12 +50,12 @@ export const ModerationModal = ({
       open={visible}
       onOk={handleOk}
       onCancel={handleCancel}
-      okText={isDanger ? "Отклонить" : "Отправить"}
+      okText={isDanger ? 'Отклонить' : 'Отправить'}
       cancelText="Отмена"
       okButtonProps={{ danger: isDanger, disabled: !reason }}
       confirmLoading={loading}
     >
-      <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+      <Space direction="vertical" size="middle" style={{ width: '100%' }}>
         <div>
           <label>Причина: *</label>
           <Radio.Group
@@ -63,8 +63,8 @@ export const ModerationModal = ({
             onChange={(e) => setReason(e.target.value)}
             style={{
               marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
               gap: 8,
             }}
           >
@@ -76,7 +76,7 @@ export const ModerationModal = ({
           </Radio.Group>
         </div>
 
-        {(reason === "Другое" || !isDanger) && (
+        {(reason === 'Другое' || !isDanger) && (
           <div>
             <label>Комментарий:</label>
             <TextArea
@@ -90,5 +90,5 @@ export const ModerationModal = ({
         )}
       </Space>
     </Modal>
-  );
-};
+  )
+}

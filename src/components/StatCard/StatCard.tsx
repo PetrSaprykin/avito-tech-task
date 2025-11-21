@@ -1,12 +1,12 @@
-import { Card } from "antd";
-import { ReactNode } from "react";
-import styles from "./StatCard.module.css";
+import { Card } from 'antd'
+import { ReactNode } from 'react'
+import styles from './StatCard.module.css'
 
 interface StatCardProps {
-  title: string;
-  value: string | number;
-  icon: ReactNode;
-  color: string;
+  title: string
+  value: string | number
+  icon: ReactNode
+  color: string
 }
 
 export const StatCard = ({ title, value, icon, color }: StatCardProps) => {
@@ -22,5 +22,5 @@ export const StatCard = ({ title, value, icon, color }: StatCardProps) => {
         </div>
       </div>
     </Card>
-  );
-};
+  )
+}

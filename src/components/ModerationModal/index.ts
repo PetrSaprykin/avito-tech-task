@@ -1,1 +1,1 @@
-export { ModerationModal } from "./ModerationModal";
+export { ModerationModal } from './ModerationModal'

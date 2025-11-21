@@ -1,1 +1,1 @@
-export { AdCard } from "./AdCard";
+export { AdCard } from './AdCard'
