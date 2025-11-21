@@ -1,0 +1,26 @@
+.approveButton {
+  background: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.approveButton:hover:not(:disabled) {
+  background: var(--color-success-hover);
+  border-color: var(--color-success-hover);
+}
+
+.changesButton {
+  background: var(--color-warning);
+  border-color: var(--color-warning);
+  color: white;
+}
+
+.changesButton:hover {
+  background: var(--color-warning-hover);
+  border-color: var(--color-warning-hover);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}

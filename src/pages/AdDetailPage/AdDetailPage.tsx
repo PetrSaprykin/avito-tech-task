@@ -1,27 +1,14 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Button, Spin, Tag, Card, Descriptions, Space, message, Image } from 'antd'
-import {
-  ArrowLeftOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  ExclamationCircleOutlined,
-  LeftOutlined,
-  RightOutlined,
-  UserOutlined,
-  StarOutlined,
-  ShopOutlined,
-  CalendarOutlined,
-} from '@ant-design/icons'
+import { Button, Spin, Space, message } from 'antd'
+import { ArrowLeftOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { getAdById, approveAd, rejectAd, requestChanges, getAds } from '@/api/ads'
 import { Advertisement } from '@/types'
 import { useHotkeys } from '@/hooks/useHotkeys'
 import { ModerationModal } from '@/components/ModerationModal/ModerationModal'
-import { ModerationHistory } from '@/components/ModerationHistory/ModerationHistory'
-import { formatDate, formatPrice } from '@/utils/formatters'
-import { getStatusConfig } from '@/utils/statusConfig'
+import { AdDetailContent } from '@/components/AdDetailContent'
+import { AdDetailSidebar } from '@/components/AdDetailSidebar'
 import styles from './AdDetailPage.module.css'
-
 export const AdDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -189,7 +176,6 @@ export const AdDetailPage = () => {
     )
   }
 
-  const statusConfig = getStatusConfig(ad.status)
   const currentIndex = allAdsIds.indexOf(ad.id)
   const hasPrevious = currentIndex > 0
   const hasNext = currentIndex < allAdsIds.length - 1
@@ -212,111 +198,17 @@ export const AdDetailPage = () => {
 
       <div className={styles.content}>
         <div className={styles.mainSection}>
-          <Card className={styles.card}>
-            <div className={styles.header}>
-              <h1 className={styles.title}>{ad.title}</h1>
-              <div className={styles.tags}>
-                <Tag color={statusConfig.color} icon={statusConfig.icon}>
-                  {statusConfig.text}
-                </Tag>
-                {ad.priority === 'urgent' && <Tag color="red">СРОЧНО</Tag>}
-              </div>
-            </div>
-
-            <div className={styles.imageGallery}>
-              <Image.PreviewGroup>
-                {ad.images.map((img, idx) => (
-                  <Image
-                    key={idx}
-                    src={img}
-                    alt={`${ad.title} - ${idx + 1}`}
-                    className={styles.galleryImage}
-                    fallback="https://via.placeholder.com/400x300?text=Нет+фото"
-                  />
-                ))}
-              </Image.PreviewGroup>
-            </div>
-
-            <div className={styles.priceSection}>
-              <span className={styles.price}>{formatPrice(ad.price)} ₽</span>
-              <Tag>{ad.category}</Tag>
-            </div>
-
-            <div className={styles.section}>
-              <h3>Описание</h3>
-              <p className={styles.description}>{ad.description}</p>
-            </div>
-
-            <div className={styles.section}>
-              <h3>Характеристики</h3>
-              <Descriptions bordered column={1} size="small">
-                {Object.entries(ad.characteristics).map(([key, value]) => (
-                  <Descriptions.Item key={key} label={key}>
-                    {value}
-                  </Descriptions.Item>
-                ))}
-              </Descriptions>
-            </div>
-
-            <div className={styles.section}>
-              <h3>Информация о продавце</h3>
-              <div className={styles.seller}>
-                <UserOutlined className={styles.sellerIcon} />
-                <div className={styles.sellerDetails}>
-                  <div className={styles.sellerName}>{ad.seller.name}</div>
-                  <div className={styles.sellerInfo}>
-                    <StarOutlined /> Рейтинг: {ad.seller.rating}
-                  </div>
-                  <div className={styles.sellerInfo}>
-                    <ShopOutlined /> Объявлений: {ad.seller.totalAds}
-                  </div>
-                  <div className={styles.sellerInfo}>
-                    <CalendarOutlined /> На сайте с {formatDate(ad.seller.registeredAt)}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
+          <AdDetailContent ad={ad} />
         </div>
 
-        <div className={styles.sidebar}>
-          <Card title="Панель модератора" className={styles.moderatorPanel}>
-            <Space direction="vertical" size="middle" style={{ width: '100%' }}>
-              <Button
-                type="primary"
-                icon={<CheckCircleOutlined />}
-                onClick={handleApprove}
-                loading={actionLoading}
-                disabled={ad.status === 'approved'}
-                block
-                size="large"
-                className={styles.approveButton}
-              >
-                {ad.status === 'approved' ? 'Уже одобрено' : 'Одобрить (A)'}
-              </Button>
-              <Button
-                danger
-                icon={<CloseCircleOutlined />}
-                onClick={() => setRejectModalOpen(true)}
-                disabled={ad.status === 'rejected'}
-                block
-                size="large"
-              >
-                {ad.status === 'rejected' ? 'Уже отклонено' : 'Отклонить (D)'}
-              </Button>
-              <Button
-                icon={<ExclamationCircleOutlined />}
-                onClick={() => setChangesModalOpen(true)}
-                block
-                size="large"
-                className={styles.changesButton}
-              >
-                Вернуть на доработку
-              </Button>
-            </Space>
-          </Card>
-
-          <ModerationHistory history={ad.moderationHistory} />
+        <div className={styles.sidebarSection}>
+          <AdDetailSidebar
+            ad={ad}
+            onApprove={handleApprove}
+            onReject={() => setRejectModalOpen(true)}
+            onRequestChanges={() => setChangesModalOpen(true)}
+            actionLoading={actionLoading}
+          />
         </div>
       </div>
 

@@ -1,0 +1,1 @@
+export { AdDetailContent } from './AdDetailContent'
