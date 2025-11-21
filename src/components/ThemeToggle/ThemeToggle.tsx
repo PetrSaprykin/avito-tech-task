@@ -3,7 +3,7 @@ import { BulbOutlined } from '@ant-design/icons'
 import { useTheme } from '@/contexts/ThemeContext'
 import styles from './ThemeToggle.module.css'
 
-const ThemeToggle = () => {
+export const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme()
 
   return (
@@ -18,5 +18,3 @@ const ThemeToggle = () => {
     </div>
   )
 }
-
-export default ThemeToggle

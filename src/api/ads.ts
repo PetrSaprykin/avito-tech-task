@@ -1,5 +1,5 @@
 import apiClient from './client'
-import { Advertisement, Pagination } from '../types'
+import { Advertisement, Pagination } from '@/types'
 import { GetAdsParams } from '@/hooks/useAdFilters'
 
 interface GetAdsResponse {

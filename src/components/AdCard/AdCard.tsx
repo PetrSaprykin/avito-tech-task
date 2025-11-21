@@ -1,6 +1,6 @@
 import { Card, Tag, Badge } from 'antd'
 import { ClockCircleOutlined } from '@ant-design/icons'
-import { Advertisement } from '../../types'
+import { Advertisement } from '@/types'
 import styles from './AdCard.module.css'
 
 interface AdCardProps {

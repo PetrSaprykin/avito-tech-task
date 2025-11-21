@@ -2,7 +2,7 @@ import { Card, Tag } from 'antd'
 import { useState } from 'react'
 import styles from './HotkeysHelp.module.css'
 
-const HotkeysHelp = () => {
+export const HotkeysHelp = () => {
   const [visible, setVisible] = useState(false)
 
   const hotkeys = [
@@ -34,5 +34,3 @@ const HotkeysHelp = () => {
     </div>
   )
 }
-
-export default HotkeysHelp
