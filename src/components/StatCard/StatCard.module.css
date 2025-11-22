@@ -5,11 +5,6 @@
   background: var(--bg-primary);
 }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
 .content {
   display: flex;
   align-items: center;
