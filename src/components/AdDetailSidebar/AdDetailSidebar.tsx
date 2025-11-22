@@ -44,6 +44,7 @@ export const AdDetailSidebar = ({
             icon={<CloseCircleOutlined />}
             onClick={onReject}
             disabled={ad.status === 'rejected'}
+            className={styles.rejectButton}
             block
             size="large"
           >

@@ -1,10 +1,14 @@
 :root {
   /* Основные цвета Авито */
-  --color-primary: rgb(0, 170, 255);
-  --color-success: rgb(2, 209, 92);
+  --color-primary: #00aaff;
+  --color-success: #069242;
   --color-secondary: #965eeb;
-  --color-error: #ff4d4f;
-  --color-warning: #faad14;
+  --color-error: #bd0d10;
+  --color-warning: #c5880f;
+
+  --color-success-hover: #06b652;
+  --color-error-hover: #df0f13;
+  --color-warning-hover: #e4a11b;
 
   /* Фоны светлой темы */
   --bg-primary: #ffffff;
