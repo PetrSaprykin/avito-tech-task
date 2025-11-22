@@ -1,6 +1,8 @@
 import { Card, Tag, Badge } from 'antd'
 import { ClockCircleOutlined } from '@ant-design/icons'
 import { Advertisement } from '@/types'
+import { getStatusConfig } from '@/utils/statusConfig'
+import { formatDate, formatPrice } from '@/utils/formatters'
 import styles from './AdCard.module.css'
 
 interface AdCardProps {
@@ -9,34 +11,6 @@ interface AdCardProps {
 }
 
 export const AdCard = ({ ad, onClick }: AdCardProps) => {
-  const getStatusConfig = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return { color: 'orange', text: 'На модерации' }
-      case 'approved':
-        return { color: 'green', text: 'Одобрено' }
-      case 'rejected':
-        return { color: 'red', text: 'Отклонено' }
-      case 'draft':
-        return { color: 'default', text: 'Черновик' }
-      default:
-        return { color: 'default', text: status }
-    }
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('ru-RU', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    })
-  }
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('ru-RU').format(price)
-  }
-
   const statusConfig = getStatusConfig(ad.status)
 
   return (
