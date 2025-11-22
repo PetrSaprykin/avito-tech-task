@@ -28,17 +28,17 @@ const ActivityChart = ({ data }: ActivityChartProps) => {
       {
         label: 'Одобрено',
         data: data.map((item) => item.approved),
-        backgroundColor: 'rgb(2, 209, 92)',
+        backgroundColor: '#069242',
       },
       {
         label: 'Отклонено',
         data: data.map((item) => item.rejected),
-        backgroundColor: '#ff4d4f',
+        backgroundColor: '#bd0d10',
       },
       {
         label: 'На доработку',
         data: data.map((item) => item.requestChanges),
-        backgroundColor: '#faad14',
+        backgroundColor: '#c5880f',
       },
     ],
   }
