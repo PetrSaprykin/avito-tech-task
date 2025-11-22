@@ -27,7 +27,7 @@ export const AdCard = ({ ad, onClick }: AdCardProps) => {
           <div className={styles.imageWrapper}>
             <img
               alt={ad.title}
-              src={ad.images[0] || 'https://via.placeholder.com/300x200?text=Нет+фото'}
+              src={ad.images[0] || '@/../public/ad-image-placeholder.svg'}
               className={styles.image}
             />
           </div>

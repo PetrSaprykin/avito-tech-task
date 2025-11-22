@@ -108,8 +108,10 @@ export const AdListPage = () => {
   }
 
   const handleResetFilters = () => {
-    resetFilters()
-    setCurrentPage(1)
+    if (selectedCategory || selectedStatuses.length > 0 || minPrice || maxPrice) {
+      resetFilters()
+      setCurrentPage(1)
+    }
   }
 
   const handlePageChange = (page: number) => {
