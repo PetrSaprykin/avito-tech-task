@@ -52,7 +52,7 @@ export const AdListPage = () => {
     getFilterParams,
   } = useAdFilters()
 
-  const debouncedSearch = useDebounce(searchInput, 500) // дебаунс поиска на 500мс
+  const debouncedSearch = useDebounce(searchInput, 500)
 
   useUrlFilters({
     selectedStatuses,
@@ -74,7 +74,13 @@ export const AdListPage = () => {
   })
 
   useEffect(() => {
-    loadAds()
+    const abortController = new AbortController()
+
+    loadAds(abortController.signal)
+
+    return () => {
+      abortController.abort()
+    }
   }, [
     currentPage,
     selectedStatuses,
@@ -86,7 +92,7 @@ export const AdListPage = () => {
     sortOrder,
   ])
 
-  const loadAds = async () => {
+  const loadAds = async (signal?: AbortSignal) => {
     setLoading(true)
     setError(null)
 
@@ -96,10 +102,13 @@ export const AdListPage = () => {
         limit: 10,
         ...getFilterParams(debouncedSearch),
       }
-      const response = await getAds(params)
+      const response = await getAds(params, signal)
       setAds(response.ads)
       setPagination(response.pagination)
-    } catch (err) {
+    } catch (err: any) {
+      if (err.name === 'CanceledError' || err.code === 'ERR_CANCELED') {
+        return
+      }
       const errorMessage = 'Не удалось загрузить объявления. Попробуйте позже'
       setError(errorMessage)
     } finally {
@@ -134,7 +143,7 @@ export const AdListPage = () => {
       <div className={styles.errorContainer}>
         <div className={styles.error}>
           <p className={styles.errorText}>{error}</p>
-          <Button onClick={loadAds} className={styles.retryButton}>
+          <Button onClick={() => loadAds()} className={styles.retryButton}>
             Попробовать снова
           </Button>
         </div>

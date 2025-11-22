@@ -9,6 +9,7 @@ import { ModerationModal } from '@/components/ModerationModal/ModerationModal'
 import { AdDetailContent } from '@/components/AdDetailContent'
 import { AdDetailSidebar } from '@/components/AdDetailSidebar'
 import styles from './AdDetailPage.module.css'
+
 export const AdDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -22,14 +23,24 @@ export const AdDetailPage = () => {
   const [allAdsIds, setAllAdsIds] = useState<number[]>([])
 
   useEffect(() => {
-    loadAllAdsIds()
+    const controller = new AbortController()
+    loadAllAdsIds(controller.signal)
+
+    return () => {
+      controller.abort()
+    }
   }, [])
 
   useEffect(() => {
     if (id) {
       const numericId = parseInt(id, 10)
       if (!isNaN(numericId)) {
-        loadAd(numericId)
+        const controller = new AbortController()
+        loadAd(numericId, controller.signal)
+
+        return () => {
+          controller.abort()
+        }
       } else {
         setError('Некорректный ID объявления')
         setLoading(false)
@@ -37,24 +48,30 @@ export const AdDetailPage = () => {
     }
   }, [id])
 
-  const loadAllAdsIds = async () => {
+  const loadAllAdsIds = async (signal?: AbortSignal) => {
     try {
-      const response = await getAds({ limit: 100, page: 1 })
+      const response = await getAds({ limit: 100, page: 1 }, signal)
       const ids = response.ads.map((ad) => ad.id)
       setAllAdsIds(ids)
-    } catch (err) {
+    } catch (err: any) {
+      if (err.name === 'CanceledError' || err.code === 'ERR_CANCELED') {
+        return
+      }
       setAllAdsIds([])
     }
   }
 
-  const loadAd = async (adId: number) => {
+  const loadAd = async (adId: number, signal?: AbortSignal) => {
     setLoading(true)
     setError(null)
 
     try {
-      const data = await getAdById(adId)
+      const data = await getAdById(adId, signal)
       setAd(data)
-    } catch (err) {
+    } catch (err: any) {
+      if (err.name === 'CanceledError' || err.code === 'ERR_CANCELED') {
+        return
+      }
       const errorMessage = 'Не удалось загрузить объявление'
       setError(errorMessage)
     } finally {
@@ -73,12 +90,17 @@ export const AdDetailPage = () => {
       if (!ad) return
 
       setActionLoading(true)
+      const controller = new AbortController()
+
       try {
-        await action(ad.id, ...args)
+        await action(ad.id, ...args, controller.signal)
         message.success(successMessage)
         if (closeModal) closeModal()
         loadAd(ad.id)
-      } catch (err) {
+      } catch (err: any) {
+        if (err.name === 'CanceledError' || err.code === 'ERR_CANCELED') {
+          return
+        }
         message.error(errorMessage)
       } finally {
         setActionLoading(false)

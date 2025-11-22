@@ -8,7 +8,10 @@ interface GetAdsResponse {
 }
 
 // получение объявлений по параметрам
-export const getAds = async (params: GetAdsParams = {}): Promise<GetAdsResponse> => {
+export const getAds = async (
+  params: GetAdsParams = {},
+  signal?: AbortSignal
+): Promise<GetAdsResponse> => {
   const queryParams = new URLSearchParams()
 
   if (params.page) queryParams.append('page', params.page.toString())
@@ -23,40 +26,55 @@ export const getAds = async (params: GetAdsParams = {}): Promise<GetAdsResponse>
   if (params.sortBy) queryParams.append('sortBy', params.sortBy)
   if (params.sortOrder) queryParams.append('sortOrder', params.sortOrder)
 
-  const response = await apiClient.get<GetAdsResponse>(`/ads?${queryParams.toString()}`)
+  const response = await apiClient.get<GetAdsResponse>(`/ads?${queryParams.toString()}`, {
+    signal,
+  })
   return response.data
 }
 
-export const getAdById = async (id: number): Promise<Advertisement> => {
-  const response = await apiClient.get<Advertisement>(`/ads/${id}`)
+export const getAdById = async (id: number, signal?: AbortSignal): Promise<Advertisement> => {
+  const response = await apiClient.get<Advertisement>(`/ads/${id}`, { signal })
   return response.data
 }
 
-export const approveAd = async (id: number): Promise<{ message: string; ad: Advertisement }> => {
-  const response = await apiClient.post(`/ads/${id}/approve`)
+export const approveAd = async (
+  id: number,
+  signal?: AbortSignal
+): Promise<{ message: string; ad: Advertisement }> => {
+  const response = await apiClient.post(`/ads/${id}/approve`, {}, { signal })
   return response.data
 }
 
 export const rejectAd = async (
   id: number,
   reason: string,
-  comment?: string
+  comment?: string,
+  signal?: AbortSignal
 ): Promise<{ message: string; ad: Advertisement }> => {
-  const response = await apiClient.post(`/ads/${id}/reject`, {
-    reason,
-    comment,
-  })
+  const response = await apiClient.post(
+    `/ads/${id}/reject`,
+    {
+      reason,
+      comment,
+    },
+    { signal }
+  )
   return response.data
 }
 
 export const requestChanges = async (
   id: number,
   reason: string,
-  comment?: string
+  comment?: string,
+  signal?: AbortSignal
 ): Promise<{ message: string; ad: Advertisement }> => {
-  const response = await apiClient.post(`/ads/${id}/request-changes`, {
-    reason,
-    comment,
-  })
+  const response = await apiClient.post(
+    `/ads/${id}/request-changes`,
+    {
+      reason,
+      comment,
+    },
+    { signal }
+  )
   return response.data
 }

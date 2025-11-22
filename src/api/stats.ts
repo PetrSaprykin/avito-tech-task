@@ -1,22 +1,25 @@
 import apiClient from './client'
 import { StatsSummary } from '@/types'
 
-export const getStatsSummary = async (period: string = 'week'): Promise<StatsSummary> => {
-  const response = await apiClient.get(`/stats/summary?period=${period}`)
+export const getStatsSummary = async (
+  period: string = 'week',
+  signal?: AbortSignal
+): Promise<StatsSummary> => {
+  const response = await apiClient.get(`/stats/summary?period=${period}`, { signal })
   return response.data
 }
 
-export const getActivityChart = async (period: string = 'week') => {
-  const response = await apiClient.get(`/stats/chart/activity?period=${period}`)
+export const getActivityChart = async (period: string = 'week', signal?: AbortSignal) => {
+  const response = await apiClient.get(`/stats/chart/activity?period=${period}`, { signal })
   return response.data
 }
 
-export const getDecisionsChart = async (period: string = 'week') => {
-  const response = await apiClient.get(`/stats/chart/decisions?period=${period}`)
+export const getDecisionsChart = async (period: string = 'week', signal?: AbortSignal) => {
+  const response = await apiClient.get(`/stats/chart/decisions?period=${period}`, { signal })
   return response.data
 }
 
-export const getCategoriesChart = async (period: string = 'week') => {
-  const response = await apiClient.get(`/stats/chart/categories?period=${period}`)
+export const getCategoriesChart = async (period: string = 'week', signal?: AbortSignal) => {
+  const response = await apiClient.get(`/stats/chart/categories?period=${period}`, { signal })
   return response.data
 }

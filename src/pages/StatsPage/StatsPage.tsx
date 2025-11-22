@@ -24,25 +24,34 @@ export const StatsPage = () => {
   const [categoriesData, setCategoriesData] = useState({})
 
   useEffect(() => {
-    loadAllStats()
+    const controller = new AbortController()
+
+    loadAllStats(controller.signal)
+
+    return () => {
+      controller.abort()
+    }
   }, [period])
 
-  const loadAllStats = async () => {
+  const loadAllStats = async (signal?: AbortSignal) => {
     setLoading(true)
     setError(null)
     try {
       const [summary, activity, decisions, categories] = await Promise.all([
-        getStatsSummary(period),
-        getActivityChart(period),
-        getDecisionsChart(period),
-        getCategoriesChart(period),
+        getStatsSummary(period, signal),
+        getActivityChart(period, signal),
+        getDecisionsChart(period, signal),
+        getCategoriesChart(period, signal),
       ])
 
       setStats(summary)
       setActivityData(activity)
       setDecisionsData(decisions)
       setCategoriesData(categories)
-    } catch (error) {
+    } catch (err: any) {
+      if (err.name === 'CanceledError' || err.code === 'ERR_CANCELED') {
+        return
+      }
       setError('Не удалось загрузить статистику. Попробуйте позже')
     } finally {
       setLoading(false)
@@ -68,7 +77,7 @@ export const StatsPage = () => {
       <div className={styles.errorContainer}>
         <div className={styles.error}>
           <p className={styles.errorText}>{error}</p>
-          <Button onClick={loadAllStats} className={styles.retryButton}>
+          <Button onClick={() => loadAllStats()} className={styles.retryButton}>
             Попробовать снова
           </Button>
         </div>
@@ -118,7 +127,7 @@ export const StatsPage = () => {
             <Col xs={24} sm={12} lg={6}>
               <StatCard
                 title="Ср. время"
-                value={`${Math.round(stats.averageReviewTime / 60_000)} мин`} // из мс в мин
+                value={`${Math.round(stats.averageReviewTime / 60_000)} мин`}
                 icon={<ClockCircleOutlined />}
                 color="#faad14"
               />
