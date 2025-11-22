@@ -28,8 +28,6 @@ export const useAdFilters = () => {
     setMinPrice('')
     setMaxPrice('')
     setSearchInput('')
-    setSortBy('createdAt')
-    setSortOrder('desc')
   }
 
   const getFilterParams = (searchQuery: string): Partial<GetAdsParams> => {
