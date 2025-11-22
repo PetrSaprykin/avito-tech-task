@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Select, Pagination, Spin, message, InputRef } from 'antd'
+import { Select, Pagination, Spin, InputRef, Button } from 'antd'
 import { InboxOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useHotkeys } from '@/hooks/useHotkeys'
@@ -76,14 +76,12 @@ export const AdListPage = () => {
         limit: 10,
         ...getFilterParams(debouncedSearch),
       }
-
       const response = await getAds(params)
       setAds(response.ads)
       setPagination(response.pagination)
     } catch (err) {
-      const errorMessage = 'Не удалось загрузить объявления. Попробуйте позже.'
+      const errorMessage = 'Не удалось загрузить объявления. Попробуйте позже'
       setError(errorMessage)
-      message.error(errorMessage)
     } finally {
       setLoading(false)
     }
@@ -111,12 +109,12 @@ export const AdListPage = () => {
 
   if (error && !loading) {
     return (
-      <div className={styles.container}>
+      <div className={styles.errorContainer}>
         <div className={styles.error}>
           <p className={styles.errorText}>{error}</p>
-          <button onClick={loadAds} className={styles.retryButton}>
+          <Button onClick={loadAds} className={styles.retryButton}>
             Попробовать снова
-          </button>
+          </Button>
         </div>
       </div>
     )
@@ -124,46 +122,47 @@ export const AdListPage = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Список объявлений</h1>
-      </div>
-
-      <AdFilters
-        searchQuery={searchInput}
-        onSearchChange={setSearchInput}
-        onSearchSubmit={() => {}}
-        selectedStatuses={selectedStatuses}
-        onStatusesChange={setSelectedStatuses}
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-        minPrice={minPrice}
-        onMinPriceChange={setMinPrice}
-        maxPrice={maxPrice}
-        onMaxPriceChange={setMaxPrice}
-        onResetFilters={handleResetFilters}
-        searchInputRef={searchInputRef}
-      />
-
-      <div className={styles.sortSection}>
-        <div className={styles.totalCount}>
-          {pagination && `Всего объявлений: ${pagination.totalItems}`}
-        </div>
-        <div className={styles.sortControls}>
-          <Select
-            value={sortBy}
-            onChange={setSortBy}
-            options={SORT_OPTIONS}
-            style={{ width: 200 }}
+      {ads.length > 0 && (
+        <>
+          <div className={styles.header}>
+            <h1 className={styles.title}>Список объявлений</h1>
+          </div>
+          <AdFilters
+            searchQuery={searchInput}
+            onSearchChange={setSearchInput}
+            onSearchSubmit={() => {}}
+            selectedStatuses={selectedStatuses}
+            onStatusesChange={setSelectedStatuses}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            minPrice={minPrice}
+            onMinPriceChange={setMinPrice}
+            maxPrice={maxPrice}
+            onMaxPriceChange={setMaxPrice}
+            onResetFilters={handleResetFilters}
+            searchInputRef={searchInputRef}
           />
-          <Select
-            value={sortOrder}
-            onChange={setSortOrder}
-            options={SORT_ORDER_OPTIONS}
-            style={{ width: 180 }}
-          />
-        </div>
-      </div>
-
+          <div className={styles.sortSection}>
+            <div className={styles.totalCount}>
+              {pagination && `Всего объявлений: ${pagination.totalItems}`}
+            </div>
+            <div className={styles.sortControls}>
+              <Select
+                value={sortBy}
+                onChange={setSortBy}
+                options={SORT_OPTIONS}
+                style={{ width: 200 }}
+              />
+              <Select
+                value={sortOrder}
+                onChange={setSortOrder}
+                options={SORT_ORDER_OPTIONS}
+                style={{ width: 180 }}
+              />
+            </div>
+          </div>
+        </>
+      )}
       {loading ? (
         <div className={styles.loading}>
           <Spin size="large" />

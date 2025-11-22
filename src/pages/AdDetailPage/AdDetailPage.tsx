@@ -57,7 +57,6 @@ export const AdDetailPage = () => {
     } catch (err) {
       const errorMessage = 'Не удалось загрузить объявление'
       setError(errorMessage)
-      message.error(errorMessage)
     } finally {
       setLoading(false)
     }

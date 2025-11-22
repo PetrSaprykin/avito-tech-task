@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Card, Select, Row, Col, Spin } from 'antd'
+import { Card, Select, Row, Col, Spin, Space, Button } from 'antd'
 import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import {
   getStatsSummary,
@@ -17,6 +17,7 @@ import styles from './StatsPage.module.css'
 export const StatsPage = () => {
   const [period, setPeriod] = useState('week')
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [stats, setStats] = useState<StatsSummary | null>(null)
   const [activityData, setActivityData] = useState([])
   const [decisionsData, setDecisionsData] = useState(null)
@@ -28,6 +29,7 @@ export const StatsPage = () => {
 
   const loadAllStats = async () => {
     setLoading(true)
+    setError(null)
     try {
       const [summary, activity, decisions, categories] = await Promise.all([
         getStatsSummary(period),
@@ -41,7 +43,7 @@ export const StatsPage = () => {
       setDecisionsData(decisions)
       setCategoriesData(categories)
     } catch (error) {
-      console.error('Ошибка загрузки статистики:', error)
+      setError('Не удалось загрузить статистику. Попробуйте позже')
     } finally {
       setLoading(false)
     }
@@ -57,6 +59,19 @@ export const StatsPage = () => {
     return (
       <div className={styles.loading}>
         <Spin size="large" />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className={styles.errorContainer}>
+        <div className={styles.error}>
+          <p className={styles.errorText}>{error}</p>
+          <Button onClick={loadAllStats} className={styles.retryButton}>
+            Попробовать снова
+          </Button>
+        </div>
       </div>
     )
   }

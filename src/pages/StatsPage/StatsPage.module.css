@@ -18,10 +18,21 @@
 }
 
 .loading {
+  padding: 60px 0;
+  margin-top: 15%;
+  text-align: center;
+}
+
+.errorContainer {
   display: flex;
   justify-content: center;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  min-height: 400px;
+  gap: var(--spacing-sm);
 }
 
 .statsCards {
