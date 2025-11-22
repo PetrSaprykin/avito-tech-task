@@ -1,4 +1,3 @@
-// hooks/useHotkeys.ts
 import { useEffect, useRef } from 'react'
 
 type HotkeyHandler = (event: KeyboardEvent) => void
@@ -10,7 +9,6 @@ interface HotkeyConfig {
 const IGNORED_TAGS = ['INPUT', 'TEXTAREA', 'SELECT']
 
 const normalizeKey = (key: string): string => {
-  // Нормализуем специальные клавиши
   const keyMap: Record<string, string> = {
     ArrowLeft: 'arrowleft',
     ArrowRight: 'arrowright',
@@ -22,11 +20,8 @@ const normalizeKey = (key: string): string => {
 }
 
 export const useHotkeys = (hotkeys: HotkeyConfig, enabled: boolean = true) => {
-  // Используем ref чтобы всегда иметь актуальные обработчики
-  // без пересоздания слушателя событий
   const hotkeysRef = useRef<HotkeyConfig>(hotkeys)
 
-  // Обновляем ref при изменении hotkeys
   useEffect(() => {
     hotkeysRef.current = hotkeys
   }, [hotkeys])
@@ -37,7 +32,6 @@ export const useHotkeys = (hotkeys: HotkeyConfig, enabled: boolean = true) => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement
 
-      // Игнорируем если фокус на поле ввода
       if (IGNORED_TAGS.includes(target.tagName) || target.isContentEditable) {
         return
       }
@@ -56,5 +50,5 @@ export const useHotkeys = (hotkeys: HotkeyConfig, enabled: boolean = true) => {
     return () => {
       window.removeEventListener('keydown', handleKeyPress)
     }
-  }, [enabled]) // Теперь зависимость только от enabled
+  }, [enabled])
 }

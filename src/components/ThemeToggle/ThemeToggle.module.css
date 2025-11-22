@@ -2,13 +2,22 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-}
-
-.icon {
-  color: rgba(255, 255, 255, 0.85);
   font-size: 16px;
 }
 
-body[data-theme='dark'] .icon {
+.lightModeIcon {
   color: var(--color-primary);
+  transition: var(--transition-base);
+}
+.darkModeIcon {
+  color: white;
+  transition: var(--transition-base);
+}
+
+body[data-theme='dark'] .darkModeIcon {
+  color: var(--color-primary);
+}
+
+body[data-theme='dark'] .lightModeIcon {
+  color: white;
 }

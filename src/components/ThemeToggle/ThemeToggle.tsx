@@ -1,5 +1,5 @@
 import { Switch } from 'antd'
-import { SunOutlined } from '@ant-design/icons'
+import { MoonOutlined, SunOutlined } from '@ant-design/icons'
 import { useTheme } from '@/contexts/ThemeContext'
 import styles from './ThemeToggle.module.css'
 
@@ -8,8 +8,9 @@ export const ThemeToggle = () => {
 
   return (
     <div className={styles.toggle}>
-      <SunOutlined className={styles.icon} />
+      <SunOutlined className={styles.lightModeIcon} />
       <Switch checked={theme === 'dark'} onChange={toggleTheme} />
+      <MoonOutlined className={styles.darkModeIcon} />
     </div>
   )
 }
