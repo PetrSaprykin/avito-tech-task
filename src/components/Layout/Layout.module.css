@@ -15,7 +15,7 @@ body[data-theme='dark'] .header {
 }
 
 .logo {
-  color: var(--color-primary);
+  color: white;
   font-size: 18px;
   font-weight: 600;
   margin-right: var(--spacing-lg);
