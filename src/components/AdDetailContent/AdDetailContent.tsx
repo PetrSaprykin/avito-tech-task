@@ -1,7 +1,7 @@
 import { Card, Tag, Image, Descriptions } from 'antd'
 import { UserOutlined, StarOutlined, ShopOutlined, CalendarOutlined } from '@ant-design/icons'
 import { Advertisement } from '@/types'
-import { formatDate, formatPrice } from '@/utils/formatters'
+import { formatDate, formatDescription, formatPrice, formatTitle } from '@/utils/formatters'
 import { getStatusConfig } from '@/utils/statusConfig'
 import styles from './AdDetailContent.module.css'
 
@@ -15,7 +15,7 @@ export const AdDetailContent = ({ ad }: AdDetailContentProps) => {
   return (
     <Card className={styles.card}>
       <div className={styles.header}>
-        <h1 className={styles.title}>{ad.title}</h1>
+        <h1 className={styles.title}>{formatTitle(ad.title)}</h1>
         <div className={styles.tags}>
           <Tag color={statusConfig.color} icon={statusConfig.icon}>
             {statusConfig.text}
@@ -32,7 +32,7 @@ export const AdDetailContent = ({ ad }: AdDetailContentProps) => {
               src={img}
               alt={`${ad.title} - ${idx + 1}`}
               className={styles.galleryImage}
-              fallback="https://via.placeholder.com/400x300?text=Нет+фото"
+              fallback="@/../public/ad-image-placeholder.svg"
             />
           ))}
         </Image.PreviewGroup>
@@ -40,12 +40,12 @@ export const AdDetailContent = ({ ad }: AdDetailContentProps) => {
 
       <div className={styles.priceSection}>
         <span className={styles.price}>{formatPrice(ad.price)} ₽</span>
-        <Tag>{ad.category}</Tag>
+        <Tag className={styles.categoryTag}>{ad.category}</Tag>
       </div>
 
       <div className={styles.section}>
         <h3>Описание</h3>
-        <p className={styles.description}>{ad.description}</p>
+        <p className={styles.description}>{formatDescription(ad.description)}</p>
       </div>
 
       <div className={styles.section}>

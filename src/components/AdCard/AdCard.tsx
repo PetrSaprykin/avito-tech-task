@@ -2,7 +2,7 @@ import { Card, Tag, Badge } from 'antd'
 import { ClockCircleOutlined } from '@ant-design/icons'
 import { Advertisement } from '@/types'
 import { getStatusConfig } from '@/utils/statusConfig'
-import { formatDate, formatPrice } from '@/utils/formatters'
+import { formatDate, formatPrice, formatTitle } from '@/utils/formatters'
 import styles from './AdCard.module.css'
 
 interface AdCardProps {
@@ -40,12 +40,12 @@ export const AdCard = ({ ad, onClick }: AdCardProps) => {
             </Tag>
             {ad.priority === 'urgent' && (
               <Tag color="red" className={styles.priorityTag}>
-                Срочный
+                Срочно
               </Tag>
             )}
           </div>
 
-          <h3 className={styles.title}>{ad.title}</h3>
+          <h3 className={styles.title}>{formatTitle(ad.title)}</h3>
 
           <div className={styles.price}>
             <span className={styles.priceValue}>{formatPrice(ad.price)} ₽</span>

@@ -8,6 +8,11 @@
   box-shadow: var(--shadow-sm);
 }
 
+/* перезапись стилей контента карточки ant */
+.card > div:nth-child(2) {
+  padding: calc(var(--spacing-md) - 2px) !important;
+}
+
 .card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
@@ -34,13 +39,17 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
 }
 
 .header {
   display: flex;
   gap: var(--spacing-sm);
   flex-wrap: wrap;
+}
+
+.header > span {
+  margin-right: 0;
 }
 
 .statusTag {
