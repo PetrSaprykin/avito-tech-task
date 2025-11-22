@@ -32,6 +32,8 @@ const CATEGORY_OPTIONS = [
   { label: 'Работа', value: 3 },
   { label: 'Услуги', value: 4 },
   { label: 'Животные', value: 5 },
+  { label: 'Мода', value: 6 },
+  { label: 'Детское', value: 7 },
 ]
 
 export const AdFilters = ({
