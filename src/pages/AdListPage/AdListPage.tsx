@@ -7,6 +7,7 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { useAdFilters } from '@/hooks/useAdFilters'
 import { AdCard } from '@/components/AdCard'
 import { AdFilters } from '@/components/AdFilters/AdFilters'
+import { useUrlFilters } from '@/hooks/useUrlFilters'
 import { getAds } from '@/api/ads'
 import { Advertisement, Pagination as PaginationType } from '@/types'
 import styles from './AdListPage.module.css'
@@ -52,6 +53,25 @@ export const AdListPage = () => {
   } = useAdFilters()
 
   const debouncedSearch = useDebounce(searchInput, 500) // дебаунс поиска на 500мс
+
+  useUrlFilters({
+    selectedStatuses,
+    setSelectedStatuses,
+    selectedCategory,
+    setSelectedCategory,
+    minPrice,
+    setMinPrice,
+    maxPrice,
+    setMaxPrice,
+    searchInput,
+    setSearchInput,
+    sortBy,
+    setSortBy,
+    sortOrder,
+    setSortOrder,
+    currentPage,
+    setCurrentPage,
+  })
 
   useEffect(() => {
     loadAds()
@@ -122,47 +142,43 @@ export const AdListPage = () => {
 
   return (
     <div className={styles.container}>
-      {ads.length > 0 && (
-        <>
-          <div className={styles.header}>
-            <h1 className={styles.title}>Список объявлений</h1>
-          </div>
-          <AdFilters
-            searchQuery={searchInput}
-            onSearchChange={setSearchInput}
-            onSearchSubmit={() => {}}
-            selectedStatuses={selectedStatuses}
-            onStatusesChange={setSelectedStatuses}
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-            minPrice={minPrice}
-            onMinPriceChange={setMinPrice}
-            maxPrice={maxPrice}
-            onMaxPriceChange={setMaxPrice}
-            onResetFilters={handleResetFilters}
-            searchInputRef={searchInputRef}
+      <div className={styles.header}>
+        <h1 className={styles.title}>Список объявлений</h1>
+      </div>
+      <AdFilters
+        searchQuery={searchInput}
+        onSearchChange={setSearchInput}
+        onSearchSubmit={() => {}}
+        selectedStatuses={selectedStatuses}
+        onStatusesChange={setSelectedStatuses}
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+        minPrice={minPrice}
+        onMinPriceChange={setMinPrice}
+        maxPrice={maxPrice}
+        onMaxPriceChange={setMaxPrice}
+        onResetFilters={handleResetFilters}
+        searchInputRef={searchInputRef}
+      />
+      <div className={styles.sortSection}>
+        <div className={styles.totalCount}>
+          {pagination && `Всего объявлений: ${pagination.totalItems}`}
+        </div>
+        <div className={styles.sortControls}>
+          <Select
+            value={sortBy}
+            onChange={setSortBy}
+            options={SORT_OPTIONS}
+            style={{ width: 200 }}
           />
-          <div className={styles.sortSection}>
-            <div className={styles.totalCount}>
-              {pagination && `Всего объявлений: ${pagination.totalItems}`}
-            </div>
-            <div className={styles.sortControls}>
-              <Select
-                value={sortBy}
-                onChange={setSortBy}
-                options={SORT_OPTIONS}
-                style={{ width: 200 }}
-              />
-              <Select
-                value={sortOrder}
-                onChange={setSortOrder}
-                options={SORT_ORDER_OPTIONS}
-                style={{ width: 180 }}
-              />
-            </div>
-          </div>
-        </>
-      )}
+          <Select
+            value={sortOrder}
+            onChange={setSortOrder}
+            options={SORT_ORDER_OPTIONS}
+            style={{ width: 180 }}
+          />
+        </div>
+      </div>
       {loading ? (
         <div className={styles.loading}>
           <Spin size="large" />
