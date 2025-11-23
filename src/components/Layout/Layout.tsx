@@ -10,7 +10,7 @@ interface LayoutProps {
   children: ReactNode
 }
 
-const Layout = ({ children }: LayoutProps) => {
+export const Layout = ({ children }: LayoutProps) => {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -38,4 +38,3 @@ const Layout = ({ children }: LayoutProps) => {
   )
 }
 
-export default Layout

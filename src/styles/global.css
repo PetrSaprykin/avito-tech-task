@@ -23,6 +23,31 @@ body {
   display: none !important;
 }
 
+/* стили для прогресс-бара */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #1890ff !important;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+}
+
+[data-theme='dark'] #nprogress .bar {
+  background: #40a9ff !important;
+}
+
+[data-theme='dark'] #nprogress .peg {
+  box-shadow:
+    0 0 10px #40a9ff,
+    0 0 5px #40a9ff;
+}
+
 #root {
   min-height: 100vh;
 }

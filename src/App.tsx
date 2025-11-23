@@ -1,49 +1,112 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { ConfigProvider, theme as antdTheme } from 'antd'
-import ruRU from 'antd/locale/ru_RU'
 import { ThemeProvider, useTheme } from '@/contexts/ThemeContext'
+import { AnimatePresence, motion } from 'framer-motion'
+import type { Transition, Variants } from 'framer-motion'
+import { Layout } from '@/components/Layout'
 import { AdListPage } from '@/pages/AdListPage'
+import { useRouteProgress } from '@/hooks/useRouteProgress'
 import { AdDetailPage } from '@/pages/AdDetailPage/AdDetailPage'
 import { StatsPage } from '@/pages/StatsPage'
-import Layout from '@/components/Layout/Layout'
+import './styles/global.css'
 
-const AppContent = () => {
+// анимации перехода между страницами
+const pageVariants: Variants = {
+  initial: {
+    opacity: 0,
+    x: -20,
+  },
+  animate: {
+    opacity: 1,
+    x: 0,
+  },
+  exit: {
+    opacity: 0,
+    x: 20,
+  },
+}
+
+const pageTransition: Transition = {
+  type: 'tween',
+  ease: 'anticipate',
+  duration: 0.3,
+}
+
+function AppContent() {
   const { theme } = useTheme()
+  const location = useLocation()
+
+  useRouteProgress()
 
   return (
     <ConfigProvider
-      locale={ruRU}
       theme={{
         algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
-        token: {
-          colorPrimary: '#00aaff',
-          colorSuccess: '#02d15c',
-          colorError: '#ff4d4f',
-          colorWarning: '#faad14',
-          borderRadius: 8,
-          fontSize: 14,
-        },
       }}
     >
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/list" element={<AdListPage />} />
-            <Route path="/item/:id" element={<AdDetailPage />} />
-            <Route path="/stats" element={<StatsPage />} />
+      <Layout>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Navigate to="/list" replace />} />
+            <Route
+              path="/list"
+              element={
+                <motion.div
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                  style={{ width: '100%', overflowX: 'hidden' }}
+                >
+                  <AdListPage />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/item/:id"
+              element={
+                <motion.div
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                  style={{ width: '100%', overflowX: 'hidden' }}
+                >
+                  <AdDetailPage />
+                </motion.div>
+              }
+            />
+            <Route
+              path="/stats"
+              element={
+                <motion.div
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={pageVariants}
+                  transition={pageTransition}
+                  style={{ width: '100%', overflowX: 'hidden' }}
+                >
+                  <StatsPage />
+                </motion.div>
+              }
+            />
           </Routes>
-        </Layout>
-      </BrowserRouter>
+        </AnimatePresence>
+      </Layout>
     </ConfigProvider>
   )
 }
 
 function App() {
   return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
+    </BrowserRouter>
   )
 }
 
