@@ -123,7 +123,7 @@ export const StatsPage = () => {
         <h1 className={styles.title}>Статистика модератора</h1>
 
         <div className={styles.headerActions}>
-          <Space>
+          <Space className={styles.exportButtons}>
             <Button
               type="default"
               icon={<DownloadOutlined />}

@@ -31,12 +31,17 @@
 @media (max-width: 480px) {
   .header {
     flex-direction: column;
+    align-items: center;
+  }
+
+  .exportButtons {
+    justify-content: center;
   }
 
   .headerActions {
     width: 100%;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .headerActions > * {

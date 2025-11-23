@@ -15,6 +15,31 @@
   gap: var(--spacing-md);
 }
 
+@media (max-width: 515px) {
+  .navigation {
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--spacing-md);
+  }
+
+  .navButtons {
+    display: flex;
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 390px) {
+  .navigation {
+    gap: var(--spacing-lg);
+  }
+
+  .navButtons {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--spacing-sm);
+  }
+}
+
 .content {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -26,8 +51,6 @@
   flex-direction: column;
   gap: var(--spacing-lg);
 }
-
-
 
 .loading {
   display: flex;
@@ -51,8 +74,6 @@
   background: var(--border-color);
   margin: var(--spacing-lg) 0;
 }
-
-
 
 .tags {
   display: flex;

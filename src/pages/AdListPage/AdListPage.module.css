@@ -83,6 +83,16 @@
   margin-top: var(--spacing-xl);
 }
 
+@media (max-width: 515px) {
+  .pagination > ul :first-child {
+    width: 100%;
+    text-align: center;
+  }
+  .pagination > ul :nth-child(2) {
+    margin-left: 12.5%;
+  }
+}
+
 .loading {
   text-align: center;
   margin-top: 6%;

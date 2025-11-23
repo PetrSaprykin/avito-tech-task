@@ -22,7 +22,9 @@ export const Layout = ({ children }: LayoutProps) => {
   return (
     <AntLayout className={styles.layout}>
       <Header className={styles.header}>
-        <div className={styles.logo}>Модерация Авито</div>
+        <div className={styles.logo}>
+          Модерация <span>Авито</span>
+        </div>
         <Menu
           theme="dark"
           mode="horizontal"

@@ -18,6 +18,7 @@ body[data-theme='dark'] .header {
   color: white;
   font-size: 18px;
   font-weight: 600;
+  margin-bottom: 3px;
   margin-right: var(--spacing-lg);
   white-space: nowrap;
 }
@@ -32,4 +33,25 @@ body[data-theme='dark'] .header {
   background: var(--bg-layout);
   transition: background var(--transition-base);
   min-height: calc(100vh - 64px);
+}
+
+@media (max-width: 580px) {
+  .header {
+    justify-content: space-between;
+  }
+  .logo {
+    margin-right: -10px;
+  }
+  .menu {
+    order: -1;
+    flex-grow: 0;
+    background-color: #1668dc;
+    color: white !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .logo span {
+    display: none;
+  }
 }
