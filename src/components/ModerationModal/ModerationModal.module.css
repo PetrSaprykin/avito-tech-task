@@ -1,0 +1,12 @@
+.rejectButton {
+  background-color: var(--color-error) !important;
+  border-color: var(--border-color) !important;
+  color: white;
+  box-shadow: none;
+}
+.rejectButton:hover {
+  background-color: var(--color-error-hover) !important;
+  border-color: var(--text-primary) !important;
+  color: white !important;
+  box-shadow: none;
+}

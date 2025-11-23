@@ -7,6 +7,10 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { useAdFilters } from '@/hooks/useAdFilters'
 import { AdCard } from '@/components/AdCard'
 import { AdFilters } from '@/components/AdFilters/AdFilters'
+import { useBulkActions } from '@/hooks/useBulkActions'
+import { ModerationModal } from '@/components/ModerationModal'
+import { BulkActionsPanel } from '@/components/BulkActionsPanel'
+
 import { useUrlFilters } from '@/hooks/useUrlFilters'
 import { getAds } from '@/api/ads'
 import { Advertisement, Pagination as PaginationType } from '@/types'
@@ -116,6 +120,20 @@ export const AdListPage = () => {
     }
   }
 
+  const {
+    selectedIds,
+    bulkActionLoading,
+    rejectModalOpen,
+    setRejectModalOpen,
+    handleSelectAd,
+    clearSelection,
+    handleBulkApprove,
+    openRejectModal,
+    handleBulkReject,
+  } = useBulkActions({
+    onActionComplete: loadAds,
+  })
+
   const handleResetFilters = () => {
     if (selectedCategory || selectedStatuses.length > 0 || minPrice || maxPrice) {
       resetFilters()
@@ -198,7 +216,14 @@ export const AdListPage = () => {
         <>
           <div className={styles.adsList}>
             {ads.map((ad) => (
-              <AdCard key={ad.id} ad={ad} onClick={() => handleCardClick(ad.id)} />
+              <AdCard
+                key={ad.id}
+                ad={ad}
+                onClick={() => handleCardClick(ad.id)}
+                selectable={ad.status === 'pending'}
+                selected={selectedIds.has(ad.id)}
+                onSelect={(checked) => handleSelectAd(ad.id, checked)}
+              />
             ))}
           </div>
 
@@ -223,6 +248,25 @@ export const AdListPage = () => {
           </p>
         </div>
       )}
+
+      {selectedIds.size > 0 && (
+        <BulkActionsPanel
+          selectedCount={selectedIds.size}
+          onApprove={handleBulkApprove}
+          onReject={openRejectModal}
+          onCancel={clearSelection}
+          loading={bulkActionLoading}
+        />
+      )}
+      <ModerationModal
+        visible={rejectModalOpen}
+        title="Массовое отклонение"
+        selectedCount={selectedIds.size}
+        onOk={handleBulkReject}
+        onCancel={() => setRejectModalOpen(false)}
+        loading={bulkActionLoading}
+        isDanger
+      />
     </div>
   )
 }

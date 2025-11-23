@@ -4,6 +4,13 @@
   box-sizing: border-box;
 }
 
+html {
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar-button {
+  display: none !important;
+}
+
 body {
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
@@ -12,15 +19,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-layout);
   color: var(--text-primary);
-  transition:
-    background-color var(--transition-base),
-    color var(--transition-base);
 }
 
 /* убираем функцию инвертирования фото в пагинации (не нужно)*/
 .ant-image-preview-operations-operation-flipY,
 .ant-image-preview-operations-operation-flipX {
   display: none !important;
+}
+/* перезапись стилей ant для чекбоксов*/
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--color-primary) !important;
 }
 
 /* стили для прогресс-бара */

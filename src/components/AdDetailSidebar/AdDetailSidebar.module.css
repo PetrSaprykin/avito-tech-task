@@ -1,6 +1,6 @@
 .approveButton {
   background: var(--color-success) !important;
-  border-color: var(--color-success) !important;
+  border-color: var(--border-color) !important;
   box-shadow: none;
   color: white;
 }
@@ -8,29 +8,34 @@
 .approveButton:hover:not(:disabled) {
   background: var(--color-success-hover) !important;
   border-color: var(--color-success-hover) !important;
+  border-color: var(--text-primary) !important;
 }
 
 .rejectButton {
   background-color: var(--color-error) !important;
-  color: black;
+  border-color: var(--border-color) !important;
+  color: white;
   box-shadow: none;
 }
-.rejectButton:hover {
+.rejectButton:hover:not(:disabled) {
   background-color: var(--color-error-hover) !important;
-  color: black !important;
+  border-color: var(--text-primary) !important;
+  color: white !important;
   box-shadow: none;
 }
 
 .changesButton {
   background: var(--color-warning) !important;
   border-color: var(--color-warning) !important;
+  border-color: var(--border-color) !important;
   color: white;
 }
 
 .changesButton:hover {
   background: var(--color-warning-hover) !important;
   border-color: var(--color-warning-hover) !important;
-  color: white;
+  border-color: var(--text-primary) !important;
+  color: white !important;
 }
 
 .sidebar {

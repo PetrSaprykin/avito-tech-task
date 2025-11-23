@@ -1,5 +1,6 @@
 import { Modal, Radio, Input, Space } from 'antd'
 import { useState } from 'react'
+import styles from './ModerationModal.module.css'
 
 const { TextArea } = Input
 
@@ -10,6 +11,7 @@ interface ModerationModalProps {
   onCancel: () => void
   loading: boolean
   isDanger?: boolean
+  selectedCount?: number // для bulk-операций
 }
 
 const reasonOptions = [
@@ -28,6 +30,7 @@ export const ModerationModal = ({
   onCancel,
   loading,
   isDanger,
+  selectedCount,
 }: ModerationModalProps) => {
   const [reason, setReason] = useState('')
   const [comment, setComment] = useState('')
@@ -44,15 +47,17 @@ export const ModerationModal = ({
     setComment('')
   }
 
+  const modalTitle = selectedCount ? `${title} (объявлений: ${selectedCount})` : title
+
   return (
     <Modal
-      title={title}
+      title={modalTitle}
       open={visible}
       onOk={handleOk}
       onCancel={handleCancel}
       okText={isDanger ? 'Отклонить' : 'Отправить'}
       cancelText="Отмена"
-      okButtonProps={{ danger: isDanger, disabled: !reason }}
+      okButtonProps={{ danger: isDanger, disabled: !reason, className: styles.rejectButton }}
       confirmLoading={loading}
     >
       <Space direction="vertical" size="middle" style={{ width: '100%' }}>

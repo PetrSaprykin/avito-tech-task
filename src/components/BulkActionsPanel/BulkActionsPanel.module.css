@@ -1,0 +1,129 @@
+.bulkActionsPanel {
+  position: fixed;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.bulkActionsContent {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border: 1px solid var(--border-color);
+}
+
+.selectedCount {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.bulkActionsButtons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1060px) {
+  .bulkActionsContent {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+  }
+  .bulkActionsButtons {
+    flex-wrap: nowrap;
+  }
+}
+
+.approveButton {
+  background: var(--color-success) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: none;
+  color: white;
+}
+
+.approveButton:hover:not(:disabled) {
+  background: var(--color-success-hover) !important;
+  border-color: var(--color-success-hover) !important;
+  border-color: var(--text-primary) !important;
+}
+
+.rejectButton {
+  background-color: var(--color-error) !important;
+  border-color: var(--border-color) !important;
+  color: white;
+  box-shadow: none;
+}
+.rejectButton:hover {
+  background-color: var(--color-error-hover) !important;
+  border-color: var(--text-primary) !important;
+  color: white !important;
+  box-shadow: none;
+}
+
+.cancelButton {
+  background: var(--bg-primary) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: none;
+  color: black !important;
+}
+
+.cancelButton:hover {
+  border-color: var(--text-primary) !important;
+}
+
+body[data-theme='dark'] {
+  .cancelButton {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: none;
+    color: white !important;
+  }
+
+  .cancelButton:hover {
+    background: var(--bg-primary) !important;
+    border-color: var(--text-primary) !important;
+    color: white !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .bulkActionsPanel {
+    left: 40px;
+    right: 40px;
+    transform: none;
+    bottom: 12px;
+  }
+
+  .bulkActionsContent {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm);
+  }
+
+  .bulkActionsButtons {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+}
