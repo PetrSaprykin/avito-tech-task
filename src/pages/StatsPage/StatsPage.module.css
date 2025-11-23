@@ -8,6 +8,40 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.title {
+  display: block;
+  padding-bottom: 8px;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .headerActions {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .headerActions > * {
+    width: 100%;
+  }
 }
 
 .title {

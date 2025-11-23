@@ -11,6 +11,7 @@ export const getStatsSummary = async (
 
 export const getActivityChart = async (period: string = 'week', signal?: AbortSignal) => {
   const response = await apiClient.get(`/stats/chart/activity?period=${period}`, { signal })
+  console.log(response.data)
   return response.data
 }
 

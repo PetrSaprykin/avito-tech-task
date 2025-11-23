@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Card, Select, Row, Col, Spin, Button } from 'antd'
+import { Card, Select, Row, Col, Spin, Button, message, Space } from 'antd'
 import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import {
   getStatsSummary,
@@ -8,6 +8,8 @@ import {
   getCategoriesChart,
 } from '@/api/stats'
 import { StatsSummary } from '@/types'
+import { DownloadOutlined, FilePdfOutlined } from '@ant-design/icons'
+import { exportToCSV, exportToPDF } from '@/utils/exportUtils'
 import { StatCard } from '@/components/StatCard/StatCard'
 import ActivityChart from '@/components/charts/ActivityChart'
 import DecisionsChart from '@/components/charts/DecisionsChart'
@@ -58,11 +60,41 @@ export const StatsPage = () => {
     }
   }
 
-  const periodOptions = [
+  const PERIOD_OPTIONS = [
     { label: 'Сегодня', value: 'today' },
     { label: 'Последние 7 дней', value: 'week' },
     { label: 'Последние 30 дней', value: 'month' },
   ]
+
+  const handleExportCSV = () => {
+    if (!stats || !activityData || !decisionsData) {
+      message.warning('Нет данных для экспорта')
+      return
+    }
+
+    try {
+      exportToCSV(stats, activityData, decisionsData, period)
+      message.success('CSV файл успешно экспортирован')
+    } catch (error) {
+      message.error('Ошибка при экспорте CSV')
+      console.error(error)
+    }
+  }
+
+  const handleExportPDF = () => {
+    if (!stats || !activityData || !decisionsData) {
+      message.warning('Нет данных для экспорта')
+      return
+    }
+
+    try {
+      exportToPDF(stats, activityData, decisionsData, period)
+      message.success('PDF файл успешно экспортирован')
+    } catch (error) {
+      message.error('Ошибка при экспорте PDF')
+      console.error(error)
+    }
+  }
 
   if (loading) {
     return (
@@ -89,12 +121,34 @@ export const StatsPage = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.title}>Статистика модератора</h1>
-        <Select
-          value={period}
-          onChange={setPeriod}
-          options={periodOptions}
-          style={{ width: 200 }}
-        />
+
+        <div className={styles.headerActions}>
+          <Space>
+            <Button
+              type="default"
+              icon={<DownloadOutlined />}
+              onClick={handleExportCSV}
+              disabled={loading || !stats}
+            >
+              Экспорт CSV
+            </Button>
+            <Button
+              type="default"
+              icon={<FilePdfOutlined />}
+              onClick={handleExportPDF}
+              disabled={loading || !stats}
+            >
+              Экспорт PDF
+            </Button>
+          </Space>
+
+          <Select
+            value={period}
+            onChange={setPeriod}
+            options={PERIOD_OPTIONS}
+            style={{ width: 200 }}
+          />
+        </div>
       </div>
 
       {stats && (
