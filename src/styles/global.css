@@ -17,8 +17,10 @@ body {
     color var(--transition-base);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+/* убираем функцию инвертирования фото в пагинации (не нужно)*/
+.ant-image-preview-operations-operation-flipY,
+.ant-image-preview-operations-operation-flipX {
+  display: none !important;
 }
 
 #root {
