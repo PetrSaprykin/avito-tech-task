@@ -20,9 +20,30 @@ interface UseUrlFiltersProps {
   setCurrentPage: (page: number) => void
 }
 
+/**
+ * Хук для синхронизации фильтров с URL-параметрами.
+ * Позволяет сохранять состояние фильтров при обновлении страницы и делиться ссылками.
+ *
+ * Работает в два этапа:
+ * 1. При монтировании - восстанавливает фильтры из URL
+ * 2. При изменении фильтров - обновляет URL
+ *
+ * @param props - Состояние фильтров и функции для их изменения
+ *
+ * @example
+ * useUrlFilters({
+ *   selectedStatuses,
+ *   setSelectedStatuses,
+ *   currentPage,
+ *   setCurrentPage,
+ *   ...
+ * })
+ * // URL будет выглядеть вот так: ?status=pending,approved&page=2&sortBy=price
+ */
 export const useUrlFilters = (props: UseUrlFiltersProps) => {
   const [searchParams, setSearchParams] = useSearchParams()
 
+  // Первый useEffect: восстановление фильтров из URL при загрузке страницы
   useEffect(() => {
     const status = searchParams.get('status')
     if (status) {
@@ -63,8 +84,10 @@ export const useUrlFilters = (props: UseUrlFiltersProps) => {
     if (page) {
       props.setCurrentPage(parseInt(page))
     }
+    // Пустой массив зависимостей т.к. это выполняем только при монтировании
   }, [])
 
+  // Второй useEffect нужен для синхронизация URL при изменении фильтров
   useEffect(() => {
     const params = new URLSearchParams()
 
@@ -88,6 +111,7 @@ export const useUrlFilters = (props: UseUrlFiltersProps) => {
       params.set('search', props.searchInput)
     }
 
+    // Добавляем в URL только если отличается от дефолтного значения
     if (props.sortBy && props.sortBy !== 'createdAt') {
       params.set('sortBy', props.sortBy)
     }
@@ -100,6 +124,7 @@ export const useUrlFilters = (props: UseUrlFiltersProps) => {
       params.set('page', props.currentPage.toString())
     }
 
+    // replace: true - не создаём новую запись в истории браузера
     setSearchParams(params, { replace: true })
   }, [
     props.selectedStatuses,
